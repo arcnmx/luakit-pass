@@ -141,7 +141,19 @@ function _M.show(w, name)
 end
 
 function _M.query_uri(uri)
-    return _M.query(lousy.uri.domains_from_uri(uri))
+    local domains = lousy.uri.domains_from_uri(uri)
+    local patterns = {}
+    for i, domain in ipairs(domains) do
+        if string.sub(domain, 1, 1) == "." then
+            domain = string.sub(domain, 2)
+        end
+
+        if #domains > 1 and i ~= #domains then -- TLD is useless
+            table.insert(patterns, domain)
+        end
+    end
+
+    return _M.query(patterns)
 end
 
 function _M.query(patterns)
