@@ -176,7 +176,6 @@ local function find(page, root, selectors)
 end
 
 ui:add_signal("fill", function (_, page, data)
-    msg.warn("pass_wm fill")
     local root = page.document.body
     local focus = elem_focus(page)
     local unfocus = elem_unfocus(page)
