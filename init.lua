@@ -10,6 +10,7 @@ _M.executable = "/usr/bin/pass"
 _M.password_store = os.getenv("PASSWORD_STORE_DIR") or (os.getenv("HOME") .. "/.password-store")
 
 _M.MODE_SHOW = "show"
+_M.MODE_SUBMIT = "submit"
 _M.MODE_FILL = "fill"
 _M.MODE_OTP = "otp"
 
@@ -90,7 +91,7 @@ function _M.has_otp(pass_data)
     return _M.parse_field(pass_data, otp_field) ~= nil
 end
 
-function _M.fill(w, name)
+function _M.fill(w, name, submit)
     local data = _M.pass_show(name)
     if data ~= nil then
         pass_wm:emit_signal(w.view, "fill", {
@@ -99,6 +100,7 @@ function _M.fill(w, name)
             username = _M.parse_username(data),
             password = _M.parse_password(data),
             has_otp = _M.has_otp(data),
+            submit = submit or false,
         })
         w:set_mode("insert")
     else
@@ -183,7 +185,9 @@ function _M.build_menu(w, arg, mode)
         if mode == _M.MODE_SHOW then
             _M.show(w, menu[1].name)
         elseif mode == _M.MODE_FILL then
-            _M.fill(w, menu[1].name)
+            _M.fill(w, menu[1].name, false)
+        elseif mode == _M.MODE_SUBMIT then
+            _M.fill(w, menu[1].name, true)
         elseif mode == _M.MODE_OTP then
             _M.fill_otp(w, menu[1].name)
         end
@@ -212,7 +216,9 @@ modes.add_binds("pass-menu", lousy.util.table.join({
         if row.mode == _M.MODE_SHOW then
             _M.show(w, row.name)
         elseif row.mode == _M.MODE_FILL then
-            _M.fill(w, row.name)
+            _M.fill(w, row.name, false)
+        elseif row.mode == _M.MODE_SUBMIT then
+            _M.fill(w, row.name, true)
         elseif row.mode == _M.MODE_OTP then
             _M.fill_otp(w, row.name)
         end
@@ -236,7 +242,13 @@ modes.add_binds("insert", {
 
 modes.add_cmds({
     { ":p[ass]", "Fill password form.", function (w, o)
-        _M.build_menu(w, o.arg, _M.MODE_PASS)
+        local mode
+        if o.bang then
+            mode = _M.MODE_SUBMIT
+        else
+            mode = _M.MODE_FILL
+        end
+        _M.build_menu(w, o.arg, mode)
     end },
     { ":ps[how]", "Show password.", function (w, o)
         _M.build_menu(w, o.arg, _M.MODE_SHOW)

@@ -1,9 +1,9 @@
 local select = require("select_wm")
 local lousy = require("lousy")
-local ui = ipc_channel("pass_wm")
+local ui = ipc_channel("pass.wm")
 local filter = lousy.util.table.filter_array
 
--- browserpass form search logic: https://github.com/dannyvankooten/browserpass/blob/master/chrome/inject.browserify.js
+-- browserpass form search logic: https://github.com/dannyvankooten/browserpass/blob/master/chrome/inject.js
 
 local FORM_MARKERS = {
     "login",
@@ -207,6 +207,13 @@ ui:add_signal("fill", function (_, page, data)
         focus(password_field[1])
     elseif #username_field > 0 then
         focus(username_field[1])
+    end
+
+    local submit = find(page, root, SUBMIT_FIELDS)
+    if #submit > 0 then
+        if data.submit then
+            focus(submit[1])
+        end
     end
 end)
 
