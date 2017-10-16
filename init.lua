@@ -26,7 +26,10 @@ formfiller.extend({
         else
             return nil
         end
-    end
+    end,
+    otp = function (name, field)
+        return _M.pass_otp(name)
+    end,
 })
 
 function _M.pass_show(name)
