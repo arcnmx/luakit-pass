@@ -1,7 +1,8 @@
 # luakit-pass
 
 [pass](https://www.passwordstore.org/) password manager plugin for the
-[luakit](https://luakit.github.io/) browser. Uses standard
+[luakit](https://luakit.github.io/) browser, provided as an alternative to the
+[formfiller module](https://luakit.github.io/docs/modules/formfiller.html). Uses standard
 [multi-line password data](https://www.passwordstore.org/#organization) for
 embedding extra data such as username or email, compatible with similar tools
 such as [browserpass](https://github.com/dannyvankooten/browserpass) or [passff](https://github.com/passff/passff).
