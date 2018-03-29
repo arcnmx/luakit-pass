@@ -185,8 +185,10 @@ ui:add_signal("fill", function (_, page, data)
         username_field = find(page, root, USERNAME_FIELDS)
     end
     if #username_field > 0 then
-        username_field[1].value = data.username
-        unfocus(username_field[1])
+        if data.username ~= nil then
+            username_field[1].value = data.username
+            unfocus(username_field[1])
+        end
     end
 
     local password_field = find(page, root, PASSWORD_FIELDS)
@@ -195,8 +197,10 @@ ui:add_signal("fill", function (_, page, data)
         password_field = find(page, root, PASSWORD_FIELDS)
     end
     if #password_field > 0 then
-        password_field[1].value = data.password
-        unfocus(password_field[1])
+        if data.password ~= nil then
+            password_field[1].value = data.password
+            unfocus(password_field[1])
+        end
     end
 
     if #password_field > 1 then
