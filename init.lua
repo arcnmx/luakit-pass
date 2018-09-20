@@ -66,7 +66,7 @@ function _M.parse_password(pass_data)
     return nil
 end
 
-local username_fields = { "username", "user", "email", "login" }
+local username_fields = { "Username", "username", "User", "user", "Email", "email", "Login", "login" }
 local otp_field = "otpauth"
 
 function _M.parse_username(pass_data)
